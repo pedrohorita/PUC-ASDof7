@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="hello.filters.pre.SimpleFilterTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2017-05-01T20:55:38" hostname="EGONTECH-NTB03" time="0.469">
+  <properties/>
+  <testcase name="testFilterOrder" classname="hello.filters.pre.SimpleFilterTest" time="0.231"/>
+  <testcase name="testRun" classname="hello.filters.pre.SimpleFilterTest" time="0.231"/>
+  <testcase name="testShouldFilter" classname="hello.filters.pre.SimpleFilterTest" time="0.001"/>
+  <testcase name="testFilterType" classname="hello.filters.pre.SimpleFilterTest" time="0.003"/>
+  <system-out><![CDATA[17:55:39.056 [Test worker] WARN com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+17:55:39.061 [Test worker] INFO com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+17:55:39.102 [Test worker] INFO com.netflix.config.DynamicPropertyFactory - DynamicPropertyFactory is initialized with configuration sources: com.netflix.config.ConcurrentCompositeConfiguration@629369ce
+17:55:39.406 [Test worker] INFO hello.filters.pre.SimpleFilter - GET request to http://foo
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
