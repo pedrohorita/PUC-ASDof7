@@ -8,8 +8,9 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.model.Autor;
@@ -35,8 +36,8 @@ public class AutorController {
 		autores.add(a4);
 		return autores;
 	}
-	@RequestMapping("/byid/")
-    public ResponseEntity<Autor> getAutorById(@RequestParam(value="id") int idAutor) {
+	@RequestMapping(method = RequestMethod.GET, value ="/{id}")
+    public ResponseEntity<Autor> getAutorById(@PathVariable("id") int idAutor) {
 		Autor ar = null;
 		for(Autor a : autores){
 			if (a.getIdAutor() == idAutor){

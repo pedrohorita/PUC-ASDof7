@@ -12,9 +12,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.model.*;
+
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/livro")
@@ -74,7 +77,8 @@ public class LivroController {
 		
 	}
 	
-	@RequestMapping("/bytitulo/")
+	@ApiOperation(value = "Consulta de livros por título")
+	@RequestMapping(method = RequestMethod.GET, value ="/bytitulo")
     public ResponseEntity<List<Livro>> LivroByTitulo(@RequestParam(value="titulo") String titulo) {
 		List<Livro> lr = new ArrayList<Livro>();
 		for(Livro l : livros){
@@ -95,7 +99,7 @@ public class LivroController {
 				for(Critica cl : l.getCriticas()){
 					if (!cl.hasLinks()){
 						cl.add(linkTo(methodOn(LivroController.class).CriticaLivro(l.getISBN(), 
-								cl.getTexto())).withSelfRel());
+								cl.getIdCritica())).withSelfRel());
 					}
 				}
 				lr.add(l);
@@ -106,7 +110,8 @@ public class LivroController {
         return new ResponseEntity<List<Livro>>(lr, HttpStatus.OK);
     }
 	
-	@RequestMapping("/byautor/")
+	@ApiOperation(value = "Consulta de livros por autor")
+	@RequestMapping(method = RequestMethod.GET, value ="/byautor")
     public ResponseEntity<List<Livro>> LivroByAutor(@RequestParam(value="autorname") String autorName, 
     		@RequestParam(value="autorlastname") String autorlastname ) {
 		List<Livro> lr = new ArrayList<Livro>();
@@ -124,7 +129,7 @@ public class LivroController {
 					for(Critica cl : l.getCriticas()){
 						if (!cl.hasLinks()){
 							cl.add(linkTo(methodOn(LivroController.class).CriticaLivro(l.getISBN(), 
-									cl.getTexto())).withSelfRel());
+									cl.getIdCritica())).withSelfRel());
 						}
 					}
 					for(LivroRelacionado ls : l.getLivrosrelacionados()){
@@ -141,7 +146,8 @@ public class LivroController {
         return new ResponseEntity<List<Livro>>(lr, HttpStatus.OK);
     }
 	
-	@RequestMapping("/bypalavrachave/")
+	@ApiOperation(value = "Consulta de livros palavra chave")
+	@RequestMapping(method = RequestMethod.GET, value ="/bypalavrachave")
     public ResponseEntity<List<Livro>> LivroByPalavraChave(@RequestParam(value="keyword") String keyword) {
 		List<Livro> lr = new ArrayList<Livro>();
 		for(Livro l : livros){
@@ -158,7 +164,7 @@ public class LivroController {
 					for(Critica cl : l.getCriticas()){
 						if (!cl.hasLinks()){
 							cl.add(linkTo(methodOn(LivroController.class).CriticaLivro(l.getISBN(), 
-									cl.getTexto())).withSelfRel());
+									cl.getIdCritica())).withSelfRel());
 						}
 					}
 					for(LivroRelacionado ls : l.getLivrosrelacionados()){
@@ -175,8 +181,9 @@ public class LivroController {
         return new ResponseEntity<List<Livro>>(lr, HttpStatus.OK);
     }
 	
-	@RequestMapping("/byisbn/")
-    public ResponseEntity<Livro> LivroByISBN(@RequestParam(value="isbn") String isbn) {
+	@ApiOperation(value = "Consulta dos dados de livro por ISBN")
+	@RequestMapping(method = RequestMethod.GET, value ="/byisbn/{id}")
+    public ResponseEntity<Livro> LivroByISBN(@PathVariable("id") String isbn) {
 		Livro lr = null;
 		for(Livro l : livros){
 			if (l.getISBN().equals(isbn)){
@@ -191,7 +198,7 @@ public class LivroController {
 				for(Critica cl : l.getCriticas()){
 					if (!cl.hasLinks()){
 						cl.add(linkTo(methodOn(LivroController.class).CriticaLivro(l.getISBN(), 
-								cl.getTexto())).withSelfRel());
+								cl.getIdCritica())).withSelfRel());
 					}
 				}
 				for(LivroRelacionado ls : l.getLivrosrelacionados()){
@@ -207,49 +214,36 @@ public class LivroController {
         return new ResponseEntity<Livro>(lr, HttpStatus.OK);
     }
 	
-	@RequestMapping("/bycritica/")
-    public ResponseEntity<Livro> LivroByCritica(@RequestParam(value="text") String text) {
-		Livro lr = null;
-		for(Livro l : livros){
-			for (Critica c : l.getCriticas()){
-				if (c.getTexto().equals(text)) {
-					if (!l.hasLinks()){
-						l.add(linkTo(methodOn(LivroController.class).LivroByISBN(l.getISBN())).withSelfRel());
+	@ApiOperation(value = "Consulta de críticas de um livro por ISBN")
+	@RequestMapping(method = RequestMethod.GET, value ="/criticasbyisbn")
+    public ResponseEntity<List<Critica>> CriticasByISBN(@RequestParam(value="isbn") String isbn) {
+		List<Critica> cr = new ArrayList<Critica>();
+		for(Livro l : livros) {
+			if (l.getISBN().equals(isbn)) {
+				for (Critica c : l.getCriticas()){
+					if (!c.hasLinks()){
+						c.add(linkTo(methodOn(LivroController.class).CriticaLivro(l.getISBN(), 
+								c.getIdCritica())).withSelfRel());
 					}
-					for(Autor a : l.getAutores()){
-						if (!a.hasLinks()){
-							a.add(linkTo(methodOn(AutorController.class).getAutorById(a.getIdAutor())).withSelfRel());
-						}									
-					}
-					for(Critica cl : l.getCriticas()){
-						if (!cl.hasLinks()){
-							cl.add(linkTo(methodOn(LivroController.class).CriticaLivro(l.getISBN(), 
-									cl.getTexto())).withSelfRel());
-						}
-					}
-					for(LivroRelacionado ls : l.getLivrosrelacionados()){
-						if (!ls.hasLinks()){
-							ls.add(linkTo(methodOn(LivroController.class).LivroByISBN(ls.getISBN())).withSelfRel());
-						}
-					}
-					lr = l;
+					cr.add(c);
 				}
 			}
 		}
 				
-        return new ResponseEntity<Livro>(lr, HttpStatus.OK);
+        return new ResponseEntity<List<Critica>>(cr, HttpStatus.OK);
     }
 	
-	@RequestMapping("/{id}/Critica/")
-    public ResponseEntity<Critica> CriticaLivro(@PathVariable("id") String isbn, @RequestParam(value="text") String text) {
+	@ApiOperation(value = "Consulta de crítica de um livro")
+	@RequestMapping(method = RequestMethod.GET, value ="/{id}/Critica/{idcritica}")
+    public ResponseEntity<Critica> CriticaLivro(@PathVariable("id") String isbn, @PathVariable("idcritica") int idcritica) {
 		Critica cr = null;
 		for(Livro l : livros){
 			if (l.getISBN().equals(isbn)){
 				for (Critica c : l.getCriticas()){
-					if (c.getTexto().equals(text)) {
+					if (c.getIdCritica() == idcritica) {
 						if (!c.hasLinks()){
 							c.add(linkTo(methodOn(LivroController.class).CriticaLivro(l.getISBN(), 
-										c.getTexto())).withSelfRel());
+										c.getIdCritica())).withSelfRel());
 						}
 						cr = c;
 					}
