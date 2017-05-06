@@ -1,0 +1,73 @@
+PONTIFÍCIA UNIVERSIDADE CATÓLICA DE MINAS GERAIS
+PRÓ-REITORIA DE PESQUISA E PÓS-GRADUAÇÃO
+DIRETORIA DE EDUCAÇÃO CONTINUADA
+Curso/Oferta: Arquitetura de Software Distribuído – Oferta 7
+Disciplina: Arquitetura de Backend e Microsserviços
+Professor: Marco Aurélio S. Mendes
+Data: 20/04/2017
+Atividade Aula 03
+Nesta aula iremos nos aprofundarmos no estilo arquitetural de APIs nas tecnologias Java EE
+e .NET. O seu ambiente de desenvolvimento, disponibilizado em uma máquina virtual, contará
+com os seguintes componentes arquiteturais representados no diagrama UML abaixo mostrado.
+Parte 1 – API Gateway
+Quando criamos aplicações centradas em API, podemos gerar um risco das aplicações cliente
+Web e Mobile terem um acoplamento excessivo com dezenas de componentes dos serviços de
+negócio, comprometendo a governança técnica do seu produto. Além disso, aspectos como
+segurança, auditoria e filtros de requisições tendem a ficar pulverizados ao longo destes serviços.
+Isso torna o código sujo e com baixa manutenibilidade.
+Para lidar com estes problemas, temos a ideia do API Gateway, que é um padrão arquitetural
+para permitir a centralização da API de um produto em um ponto central para as camadas
+cliente. Um desenho esquemático deste padrão é fornecido abaixo.
+Extraído do sítio: http://microservices.io/patterns/apigateway.html
+Existem vários produtos de mercado que implementam este padrão arquitetural. Iremos estudar
+aqui no Netflix Zuul, um produto criado pelo time de desenvolvimento da Netflix e tornado
+público para a comunidade. Para isso, responda às seguintes perguntas.
+01. Quais as principais funcionalidades do Netflix Zuul?
+Dica de resposta: https://github.com/Netflix/zuul/wiki
+02. Na prática, como a Netflix usa o Zuul?
+Dica de resposta: https://github.com/Netflix/zuul/wiki/How-We-Use-Zuul-At-Netflix
+03. Como uma aplicação com o Zuul opera na prática?
+Dica de resposta: Execute o tutorial do Zuul Proxy com o Spring Boot disponibilizado em
+https://spring.io/guides/gs/routing-and-filtering/.
+04. Represente o código realizado no item (3) através de um diagrama UML de componentes.
+Parte 2 – Construção de uma Aplicação Moderna Baseada no Estilo Arquitetural de API
+Você estudou nas últimas aulas como projetar um API com as seguintes características:
+• técnicas de roteamento
+• a documentação com o Swagger
+• testes de unidade com o Postman
+• uso do modelo HATEOS (nível 3 da maturidade de Richardson).
+Vamos agora colocar os seus conhecimentos em prática através da montagem uma API gestão
+de livros, que pode ser desenvolvida em ASP.NET Core/ASP.NET Web API ou
+Spring Boot/JAX-RS.
+A sua API 1.0 deve fornecer as seguintes capacidades:
+• consulta de livros por título
+• consulta de livros por autor
+• consulta de livros palavra chave
+• consulta dos dados de livro por ISBN
+• consulta de críticas de um livro por ISBN
+Os dados dos seus livros podem ser organizados em estruturas de dados em memória para
+tornar mais simples o seu código. Os dados obrigatórios de cada livro são:
+• ISBN – Chave primária de treze letras de um livro
+• Título
+• Descrição
+• Autores (1 ou mais)
+• Palavras chave (1 ou mais)
+• Críticas
+• Ano de Publicação
+• Edição
+• Editoria
+• Descrição do livro (texto livre)
+• Livros relacionados (1 ou mais)
+Os critérios de aceite da sua API serão:
+• API com uso do modelo HATEOS
+• Documentação Swagger
+• Evidências de testes de unidade com o Postman
+• API Gateway com o Netflix Zuul
+Parte 3 – Opcional – Para você, desenvolver Ninja, que não se contenta com pouco
+A sua API 2.0 deve ser estendida com as seguintes funcionalidades
+• Inclusão de um livro
+• Alteração dos dados de um livro
+• Remoção de um livro
+• Inclusão de uma crítica para um livro
+• Cadastro das informações dos livros em algum banco de dados
+Os critérios de aceite da sua API 2.0 são os mesmos que a sua API 1.0
